@@ -1,0 +1,4 @@
+class CONFIG:
+    OPENAI_BASE_URL = ""
+    OPENAI_API_KEY = ""
+    HUGGINGFACE_API_KEY = ""
