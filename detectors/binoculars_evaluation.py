@@ -1,0 +1,1 @@
+from binoculars_detector import Binoculars
