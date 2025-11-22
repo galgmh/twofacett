@@ -2,6 +2,8 @@ import json
 import os
 from openai import OpenAI
 
+from config import CONFIG
+
 client = OpenAI(
     api_key=CONFIG.OPENAI_API_KEY,
     base_url=CONFIG.OPENAI_BASE_URL
@@ -13,7 +15,7 @@ HUMAN_TEXT = ["abstract", "story", "document", "content"]
 OUTPUT_PATH = "dataset/benchmark_data/iterate.json"
 
 # Number of rewriting iterations
-NUM_ITER = 32
+NUM_ITER = 16
 
 # OpenAI model to use
 MODEL = "gpt-4o-mini"
@@ -56,7 +58,7 @@ SYSTEM_PROMPT = [
     ]
 
 # rewriting prompt
-REWRITE_PROMPT = {
+REWRITE_PROMPT = [
     [
     # Structural Reorganization
     """
@@ -202,7 +204,7 @@ REWRITE_PROMPT = {
     {}
     """,
     ]
-}
+]
 
 def rewrite_once(text, system_prompt, user_prompt, temperature, model="gpt-4o-mini"):
     """Call OpenAI to rewrite once"""
@@ -211,13 +213,14 @@ def rewrite_once(text, system_prompt, user_prompt, temperature, model="gpt-4o-mi
         model=model,
         messages=[
             {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt}
+            {"role": "user", "content": user_prompt + "Target length: about 800 tokens."}
         ],
         temperature=temperature
     )
+    print(f"Rewriting with temperature {temperature}, model {model}, system_prompt: {system_prompt[:50]}, user_prompt: {user_prompt[:50]}, text: {text[:50]}")
     return response.choices[0].message.content.strip()
 
-def rewrite_iterative(text, system_prompt, user_prompts, rounds=32, model="gpt-4o-mini"):
+def rewrite_iterative(text, system_prompt, user_prompts, rounds=16, model="gpt-4o-mini"):
     """Perform N rounds of recursive rewriting."""
     
     current_text = text
@@ -225,16 +228,16 @@ def rewrite_iterative(text, system_prompt, user_prompts, rounds=32, model="gpt-4
 
     for r in range(1, rounds + 1):
         
-        user_prompt = user_prompts[(r - 1) % len(prompts)].format(current_text)
+        user_prompt = user_prompts[(r - 1) % len(user_prompts)].format(current_text)
         
         if (r < rounds // 2):
             temperature = 0.5   # low temperature for early rounds
         else:
             temperature = 0.7   # higher temperature for later rounds
         
-        current_text = rewrite_text(current_text, system_prompt, user_prompt, temperature, model)
+        current_text = rewrite_once(current_text, system_prompt, user_prompt, temperature, model)
 
-        if(r % 8 == 0):
+        if(r % 4 == 0):
             results.append(current_text)
 
     return results
@@ -242,17 +245,16 @@ def rewrite_iterative(text, system_prompt, user_prompts, rounds=32, model="gpt-4
 def main():
 
     id = 1
+    output = []
     for i in range(len(FILE_NAMES)):
         # Load original dataset
         input_path = os.path.join(INPUT_DIR, FILE_NAMES[i])
         with open(input_path, "r", encoding="utf-8") as f:
             data = json.load(f)
 
-        output = []
-
-        for item in data:
+        for item in data[:1]:
             original = item[HUMAN_TEXT[i]]
-            rewritten = iterative_rewrite(original, SYSTEM_PROMPT[i], REWRITE_PROMPT[i], NUM_ITER, MODEL)
+            rewritten = rewrite_iterative(original, SYSTEM_PROMPT[i], REWRITE_PROMPT[i], NUM_ITER, MODEL)
 
             output.append({
                 "id": id,
