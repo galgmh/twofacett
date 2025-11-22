@@ -18,7 +18,7 @@ OUTPUT_PATH = "dataset/benchmark_data/iterate.json"
 NUM_ITER = 16
 
 # OpenAI model to use
-MODEL = "gpt-4o-mini"
+MODEL = "gpt-4.1-mini"
 
 # system prompt for iterative rewriting
 SYSTEM_PROMPT = [
