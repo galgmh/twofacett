@@ -4,3 +4,4 @@ tqdm
 nltk 
 rouge_score 
 spacy
+aiofiles

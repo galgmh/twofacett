@@ -23,36 +23,16 @@ MODEL = "gpt-4.1-mini"
 # system prompt for iterative rewriting
 SYSTEM_PROMPT = [
     """
-    You are an expert academic writing assistant specializing in rewriting and refining research abstracts. 
-    Your role is to produce text that is formal, coherent, precise, and stylistically consistent with academic writing standards. 
-    You must preserve all scientific information and factual content while improving clarity and readability. 
-    Do not add new claims, remove technical details, or mention that you are rewriting the text.
+    You rewrite academic abstracts. Preserve all scientific facts. Improve clarity, precision, coherence, and academic tone. Do not add or remove information or mention rewriting.
     """,
     """
-    You are an advanced narrative rewriting assistant.  
-    Your task is to rewrite fiction stories while preserving the original plot, characters, setting, and narrative events.  
-    You may reorganize prose, vary sentence structure, alter pacing, and refine descriptions.  
-    You must not add new story events, new characters, new lore, or new worldbuilding details.  
-    You must not remove essential plot elements.  
-    Maintain coherence, but feel free to shift tone, style, rhythm, or diction.  
-    Each rewrite should feel like the story has been regenerated through a different AI model or writing tool.
-    Avoid meta commentary, disclaimers, or talking about the rewriting process.
+    You rewrite fiction. Keep plot, characters, events, and setting exactly the same. You may alter style, tone, pacing, and sentence structure. Do not add or remove story content or mention rewriting.
     """,
     """
-    You are a professional news-language rewriting assistant.
-    Your task is to rewrite news articles and summaries while preserving all factual information, dates, events, names, numbers, and entities exactly as stated.
-    You may restructure sentences, change wording, and adjust phrasing, but you must not alter facts, introduce new information, or remove essential details.
-    Maintain a neutral journalistic tone, similar to BBC/Reuters style.
-    Do not provide commentary, opinions, or meta statements about the rewriting task.
-    Your rewrites should sound like news articles written by different editors.
+    You rewrite news text. Preserve all facts, names, dates, numbers, and events exactly. Adjust structure or wording, but keep a neutral journalistic tone. Do not add commentary or meta text.
     """,
     """
-    You are a rewriting assistant specializing in user-generated reviews.  
-    Your goal is to rewrite the text while preserving all core opinions, complaints, experiences, and sentiments expressed by the reviewer.  
-    You may change tone, sentence structure, pacing, and word choice, but you must not alter the meaning of the reviewer’s experience or add new details that were not present.  
-    You must not remove any essential criticism or praise.  
-    Avoid summarizing; produce a full rewritten version in natural language.  
-    Do not reference the rewriting task or provide meta-commentary.
+    You rewrite user reviews. Keep all opinions, emotions, and experiences unchanged. You may modify tone, structure, pacing, and wording. Do not add details or summarize or mention rewriting.
     """,
     
     ]
@@ -62,36 +42,28 @@ REWRITE_PROMPT = [
     [
     # Structural Reorganization
     """
-    Rewrite the text by reorganizing the sentence structure to improve logical flow. 
-    Enhance clarity and precision while keeping all original scientific content intact. 
-    Academic tone should remain formal and consistent.
- 
+    Rewrite by reorganizing sentence structure for clearer logical flow. Keep all scientific content.
+
     Text:
     {}
     """,
     # Lexical Enhancement
     """
-    Rewrite the text by refining the vocabulary, using more precise academic wording, 
-    and smoothing transitions between ideas. 
-    Preserve all technical meaning and domain-specific terminology.
+    Rewrite with more precise academic vocabulary and smoother transitions. Preserve technical meaning.
 
     Text:
     {}
     """,
     # Conceptual Clarification
     """
-    Rewrite the text with a focus on clarifying the conceptual relationships and 
-    improving the explanatory quality of the writing. 
-    Keep all scientific facts unchanged and maintain an academic register.
+    Rewrite to clarify conceptual relationships and improve explanation quality. Keep facts unchanged.
 
     Text:
     {}
     """,
     # Formal Academic Enhancement 
     """
-    Rewrite the following text to make it more formal, polished, and academical. 
-    Ensure concise expression, improved sentence structure, and consistent scholarly tone. 
-    Do not add new information.
+    Rewrite to be more formal, concise, and academically polished. Do not add information.
 
     Text:
     {}
@@ -100,36 +72,28 @@ REWRITE_PROMPT = [
     [
     # Structural Reorganization
     """
-    Rewrite the following story by restructuring the narrative flow.  
-    Modify sentence boundaries, reorder descriptive elements, and smooth or alter transitions between scenes.  
-    Do not change the plot or introduce new events.
+    Rewrite by restructuring narrative flow and adjusting transitions without changing plot or events.
 
     Text:
     {}
     """,
     # Lexical Enhancement
     """
-    Rewrite the story by varying the vocabulary and enhancing descriptive language.  
-    Use different word choices, metaphors, or phrasing, while preserving all events and character actions.  
-    Do not add new events or lore.
+    Rewrite using varied vocabulary and enhanced descriptive language. Keep all events and actions.
 
     Text:
     {}
     """,
     # Tone Variation
     """
-    Rewrite the story with a shift in tone and narrative voice.  
-    You may make the style more dramatic, more minimalistic, more lyrical, or more direct,  
-    as long as the plot, events, and character actions remain unchanged.
+    Rewrite with a different tone or narrative voice, without altering story events.
 
     Text:
     {}
     """,
     # Pacing Adjustment
     """
-    Rewrite the story with an emphasis on clarity and pacing.  
-    Adjust rhythm, redistribute detail density, shorten or lengthen sentences,  
-    and smooth narrative beats without altering the core events.
+    Rewrite focusing on pacing and clarity; adjust rhythm and detail density while keeping events intact.
 
     Text:
     {}
@@ -138,32 +102,28 @@ REWRITE_PROMPT = [
     [
     # Structural Reorganization
     """
-    Rewrite the following news text by reorganizing sentence structure and altering the order of information to improve clarity or flow.  
-    Keep all facts, dates, names, and events unchanged.
+    Rewrite by reorganizing sentence structure while preserving all facts, names, and dates.
 
     Text:
     {}
     """,
     # Lexical Enhancement
     """
-    Rewrite the news article using different wording and phrasing typical of professional journalism.  
-    Maintain all factual details exactly as stated, without adding or removing information.
+    Rewrite using alternate journalistic phrasing while keeping all factual details identical.
 
     Text:
     {}
     """,
     # Concision Improvement
     """
-    Rewrite the news text to be clearer and more concise while maintaining a neutral reporting style.  
-    Ensure that all factual elements remain unchanged.
+    Rewrite to be clearer and more concise, maintaining neutral news style and all factual elements.
 
     Text:
     {}
     """,
     # Tone Variation
     """
-    Rewrite the news article with a slightly different journalistic voice—  
-    for example, more formal, more direct, or more descriptive—while keeping the factual content strictly identical.
+    Rewrite with a slightly different journalistic voice while preserving all facts.
 
     Text:
     {}
@@ -172,33 +132,28 @@ REWRITE_PROMPT = [
     [
     # Structural Reorganization 
     """
-    Rewrite the following review by restructuring the sentences and reorganizing the flow,  
-    while preserving all opinions, emotions, and experiences expressed by the reviewer.
+    Rewrite by restructuring sentences and reorganizing flow, preserving all opinions and experiences.
 
     Review:
     {}
     """,
     # Tone Variation
     """
-    Rewrite the following review using a different tone or writing voice  
-    (slightly more formal, more conversational, or more direct),  
-    while keeping the reviewer’s sentiment and experiences unchanged.
+    Rewrite using a different tone or voice while keeping meaning and sentiment unchanged.
 
     Review:
     {}
     """,
     # Lexical Enhancement
     """
-    Rewrite the following review by varying wording and expressions,  
-    using different vocabulary while keeping the same meaning and emotional intensity.
+    Rewrite using varied vocabulary while maintaining the same opinions and emotional content.
 
     Review:
     {}
     """,
     # Pacing Adjustment
     """
-    Rewrite the following review to improve clarity, pacing, and coherence.  
-    You may rearrange sentences or rephrase them, but do not alter the core complaints or experiences.
+    Rewrite to improve pacing and clarity without altering core complaints or experiences.
 
     Review:
     {}
@@ -206,36 +161,32 @@ REWRITE_PROMPT = [
     ]
 ]
 
-def rewrite_once(text, system_prompt, user_prompt, temperature, model="gpt-4o-mini"):
-    """Call OpenAI to rewrite once"""
-
-    response = client.chat.completions.create(
-        model=model,
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt + "Target length: about 800 tokens."}
-        ],
-        temperature=temperature
-    )
-    print(f"Rewriting with temperature {temperature}, model {model}, system_prompt: {system_prompt[:50]}, user_prompt: {user_prompt[:50]}, text: {text[:50]}")
-    return response.choices[0].message.content.strip()
-
 def rewrite_iterative(text, system_prompt, user_prompts, rounds=16, model="gpt-4o-mini"):
     """Perform N rounds of recursive rewriting."""
     
     current_text = text
     results = []
+    messages = [
+        {"role": "system", "content": system_prompt}
+    ]
 
     for r in range(1, rounds + 1):
         
         user_prompt = user_prompts[(r - 1) % len(user_prompts)].format(current_text)
-        
+        messages.append({"role": "user", "content": user_prompt})
+
         if (r < rounds // 2):
             temperature = 0.5   # low temperature for early rounds
         else:
             temperature = 0.7   # higher temperature for later rounds
         
-        current_text = rewrite_once(current_text, system_prompt, user_prompt, temperature, model)
+        response = client.chat.completions.create(
+            model=model,
+            messages=messages,
+            temperature=temperature
+        )
+
+        current_text = response.choices[0].message.content.strip()
 
         if(r % 4 == 0):
             results.append(current_text)
@@ -252,7 +203,8 @@ def main():
         with open(input_path, "r", encoding="utf-8") as f:
             data = json.load(f)
 
-        for item in data[:1]:
+        for item in data:
+            print(f"Processing ID: {id}")
             original = item[HUMAN_TEXT[i]]
             rewritten = rewrite_iterative(original, SYSTEM_PROMPT[i], REWRITE_PROMPT[i], NUM_ITER, MODEL)
 
