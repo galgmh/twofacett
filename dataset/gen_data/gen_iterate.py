@@ -339,3 +339,14 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+    # sort by id
+    try:
+        with open(OUTPUT_PATH, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+    except e:
+        print(e)
+
+    sorted_data = sorted(data, key=lambda x: x['id'])
+    with open(OUTPUT_PATH, 'w', encoding='utf-8') as f:
+        json.dump(sorted_data, f, indent=4, ensure_ascii=False)
+    print("Final sorting done.")
