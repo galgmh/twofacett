@@ -29,7 +29,15 @@ def gen_llm_text(prompt, model="gpt-4.1-mini"):
             print(f"Error attempt {attempt+1}: {e}")
             time.sleep(attempt + 1)
     raise RuntimeError("Failed after 5 attempts")
-   
+
+def read_json(path):
+    with open(path,"r", encoding="utf8") as f:
+        data = json.load(f)
+    return data
+
+def write_json(path, data):
+    with open(path, "w", encoding="utf8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
 
 def count_sentence(data):
     sentences = nltk.sent_tokenize(data)
@@ -57,8 +65,7 @@ def infer_prompt(domain, prompt, sentence_num):
     }
     return prompt_list[domain]
 
-if __name__ == "__main__":
-
+def main():
     input_dir = "/root/twofacett/dataset/raw_data/"
     output_path = "/root/twofacett/dataset/benchmark_data/gen_llm.json"
 
@@ -75,17 +82,16 @@ if __name__ == "__main__":
     idx = 0
     for fname in dataset_files:
 
-        full_path = os.path.join(input_dir, fname)
-        print(f"\n=== Processing {full_path} ===")
+        full_input_path = os.path.join(input_dir, fname)
+        print(f"\n=== Processing {full_input_path} ===")
 
         domain, prompt_key, human_key = infer_domain_keys(fname)
 
         # load JSON
-        with open(full_path, "r", encoding="utf-8") as f:
-            data = json.load(f)
+        data = read_json(full_input_path)
 
         # process items
-        for item in tqdm(data):
+        for item in tqdm(data): 
             idx += 1
             sentence_num = count_sentence(item[human_key])
             prompt = infer_prompt(domain, item[prompt_key], sentence_num)
@@ -102,8 +108,11 @@ if __name__ == "__main__":
 
             fout.append(new_entry)
 
-    with open(output_path, "w", encoding="utf-8") as f:
-        json.dump(fout, f, ensure_ascii=False, indent=2)
+    write_json(output_path, fout)
 
     print("\nDone! Saved merged LLM dataset to", output_path)
 
+if __name__ == "__main__":
+
+    main()
+    
