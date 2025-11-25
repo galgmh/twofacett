@@ -82,9 +82,9 @@ def main():
 
                 mixed_data.append({
                     "id": idx,
-                    "mixed_text": mixed_text,
                     "domain": domain,
-                    "mixed_ratio": ratio,
+                    "mixed_text": mixed_text,
+                    "llm_ratio": ratio,
                 })
 
         print(f"Saved {len(mixed_data)} samples for ratio {ratio}")
